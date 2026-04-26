@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reflex Drop</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#0f0f12;
+    color:white;
+    font-family:Arial, sans-serif;
+    overflow:hidden;
+    user-select:none;
+}
+
+#topbar{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:60px;
+    background:#18181d;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    font-size:22px;
+    z-index:1000;
+    border-bottom:2px solid #333;
+}
+
+#game{
+    position:absolute;
+    top:60px;
+    left:0;
+    right:0;
+    bottom:0;
+    overflow:hidden;
+}
+
+#menu{
+    position:fixed;
+    inset:0;
+    background:#0f0f12;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    z-index:2000;
+    text-align:center;
+    padding:20px;
+}
+
+#menu h1{
+    font-size:48px;
+    color:#00eaff;
+}
+
+#menu p{
+    font-size:20px;
+    color:#ccc;
+}
+
+button{
+    padding:14px 30px;
+    font-size:24px;
+    border:none;
+    border-radius:14px;
+    background:#00eaff;
+    color:black;
+    font-weight:bold;
+}
+
+.shape{
+    position:absolute;
+}
+
+.circle{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:#ff3b3b;
+}
+
+.square{
+    width:60px;
+    height:60px;
+    background:#00ff66;
+}
+
+.rect{
+    width:80px;
+    height:50px;
+    background:#ffd000;
+}
+
+.triangle{
+    width:0;
+    height:0;
+    border-left:30px solid transparent;
+    border-right:30px solid transparent;
+    border-bottom:60px solid #9b59ff;
+}
+
+.flash{
+    animation:pop 0.25s forwards;
+}
+
+@keyframes pop{
+    from{transform:scale(1);opacity:1;}
+    to{transform:scale(1.8);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div id="topbar">
+    <div>Score: <span id="score">0</span></div>
+    <div>Lives: <span id="lives">5</span></div>
+</div>
+
+<div id="game"></div>
+
+<div id="menu">
+    <h1>Reflex Drop 🎯</h1>
+    <p>Tap falling shapes fast.</p>
+    <p>Equal sides = more points.</p>
+    <button onclick="startGame()">START</button>
+</div>
+
+<script>
+let score = 0;
+let lives = 5;
+let playing = false;
+let spawnLoop;
+
+const game = document.getElementById("game");
+const scoreText = document.getElementById("score");
+const livesText = document.getElementById("lives");
+const menu = document.getElementById("menu");
+
+function startGame(){
+    score = 0;
+    lives = 5;
+    updateUI();
+    menu.style.display = "none";
+    playing = true;
+
+    spawnLoop = setInterval(spawnShape, 850);
+}
+
+function updateUI(){
+    scoreText.textContent = score;
+    livesText.textContent = lives;
+}
+
+function randomType(){
+    const types = ["circle","square","triangle","rect"];
+    return types[Math.floor(Math.random()*types.length)];
+}
+
+function getPoints(type){
+    if(type === "circle") return 20;
+    if(type === "square") return 4;
+    if(type === "triangle") return Math.random() < 0.5 ? 2 : 3;
+    if(type === "rect") return 2;
+    return 1;
+}
+
+function spawnShape(){
+    if(!playing) return;
+
+    const type = randomType();
+    const shape = document.createElement("div");
+    shape.classList.add("shape", type);
+
+    let x = Math.random() * (window.innerWidth - 90);
+    let y = -80;
+    let speed = 2 + Math.random() * 3;
+
+    shape.style.left = x + "px";
+    shape.style.top = y + "px";
+
+    game.appendChild(shape);
+
+    shape.onclick = () => {
+        score += getPoints(type);
+        updateUI();
+        shape.classList.add("flash");
+        setTimeout(()=>shape.remove(),200);
+    };
+
+    const fall = setInterval(()=>{
+        if(!document.body.contains(shape)){
+            clearInterval(fall);
+            return;
+        }
+
+        y += speed;
+        shape.style.top = y + "px";
+
+        if(y > window.innerHeight){
+            clearInterval(fall);
+            shape.remove();
+
+            lives--;
+            updateUI();
+
+            if(lives <= 0){
+                gameOver();
+            }
+        }
+    },16);
+}
+
+function gameOver(){
+    playing = false;
+    clearInterval(spawnLoop);
+
+    menu.style.display = "flex";
+    menu.innerHTML = `
+        <h1>Game Over 💀</h1>
+        <p>Your Score: ${score}</p>
+        <button onclick="restartGame()">PLAY AGAIN</button>
+    `;
+}
+
+function restartGame(){
+    game.innerHTML = "";
+    menu.innerHTML = `
+        <h1>Reflex Drop 🎯</h1>
+        <p>Tap falling shapes fast.</p>
+        <p>Equal sides = more points.</p>
+        <button onclick="startGame()">START</button>
+    `;
+    startGame();
+}
+</script>
+
+</body>
+</html>
