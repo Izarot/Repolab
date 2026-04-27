@@ -1,0 +1,19 @@
+{
+  "chapters": [
+    {
+      "id": 1,
+      "name": "Neon Plains",
+      "reward": 50
+    },
+    {
+      "id": 2,
+      "name": "Crimson Orbit",
+      "reward": 80
+    },
+    {
+      "id": 3,
+      "name": "Void Grid",
+      "reward": 120
+    }
+  ]
+}
