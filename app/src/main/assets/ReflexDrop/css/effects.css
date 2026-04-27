@@ -1,1 +1,56 @@
+.btn{
+transition:transform .14s ease, box-shadow .2s ease, opacity .2s ease;
+box-shadow:0 10px 24px rgba(0,0,0,.18);
+}
 
+.btn:active{
+transform:scale(.96);
+}
+
+.btn:hover{
+opacity:.95;
+}
+
+.card,
+.miniCard{
+backdrop-filter:blur(10px);
+box-shadow:0 10px 24px rgba(0,0,0,.12);
+}
+
+.logo{
+animation:glowPulse 2.4s infinite alternate;
+}
+
+@keyframes glowPulse{
+0%{transform:scale(1);}
+100%{transform:scale(1.02);}
+}
+
+.floatText{
+text-shadow:0 0 12px currentColor;
+}
+
+.shape{
+box-shadow:0 0 20px currentColor;
+animation:dropSpin .8s linear infinite;
+}
+
+@keyframes dropSpin{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+
+.screen.active{
+animation:fadeUp .28s ease;
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(14px);
+}
+to{
+opacity:1;
+transform:none;
+}
+}
