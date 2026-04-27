@@ -1,1 +1,48 @@
+body.theme-neon{
+background:
+radial-gradient(circle at 20% 20%,rgba(0,234,255,.14),transparent 24%),
+radial-gradient(circle at 80% 20%,rgba(162,89,255,.12),transparent 22%),
+linear-gradient(180deg,#101722,#05070d);
+}
 
+body.theme-neon .logo{
+color:#00eaff;
+text-shadow:0 0 18px rgba(0,234,255,.65);
+}
+
+body.theme-neon .btn{
+background:linear-gradient(90deg,#00eaff,#00ff9d);
+color:#00141d;
+}
+
+body.theme-inferno{
+background:
+radial-gradient(circle at 20% 20%,rgba(255,120,0,.18),transparent 24%),
+linear-gradient(180deg,#251109,#090403);
+}
+
+body.theme-inferno .logo{
+color:#ff8a00;
+text-shadow:0 0 18px rgba(255,138,0,.65);
+}
+
+body.theme-inferno .btn{
+background:linear-gradient(90deg,#ff8a00,#ff4747);
+color:#fff;
+}
+
+body.theme-ultra{
+background:
+radial-gradient(circle at 20% 20%,rgba(180,90,255,.18),transparent 24%),
+linear-gradient(180deg,#1a102a,#07040d);
+}
+
+body.theme-ultra .logo{
+color:#d06cff;
+text-shadow:0 0 18px rgba(208,108,255,.7);
+}
+
+body.theme-ultra .btn{
+background:linear-gradient(90deg,#b04dff,#ff6cff);
+color:#fff;
+}
