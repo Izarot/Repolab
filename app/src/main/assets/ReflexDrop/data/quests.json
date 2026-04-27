@@ -1,0 +1,19 @@
+{
+  "quests": [
+    {
+      "name": "Play 3 Games",
+      "goal": 3,
+      "reward": 25
+    },
+    {
+      "name": "Reach Score 100",
+      "goal": 100,
+      "reward": 40
+    },
+    {
+      "name": "Combo x20",
+      "goal": 20,
+      "reward": 35
+    }
+  ]
+}
