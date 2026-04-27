@@ -2,209 +2,363 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Reflex Drop V4</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Reflex Drop GOD MODE</title>
+
+<!--
+REFLEX DROP GOD MODE
+Single-file premium mobile web game shell
+Part 1 / Continuing build required in next message due to size limits
+-->
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-font-family:Arial,Helvetica,sans-serif;
-background:linear-gradient(180deg,#071018,#0d1622,#12101f);
-color:#fff;
-overflow:hidden;
-user-select:none;
+:root{
+--bg1:#05070d;
+--bg2:#111827;
+--glass:rgba(255,255,255,.08);
+--line:rgba(255,255,255,.12);
+--txt:#eef6ff;
+--muted:#97a5bf;
+--cyan:#00eaff;
+--green:#00ff9d;
+--gold:#ffd95a;
+--red:#ff4d6d;
+--purple:#a259ff;
+--shadow:0 0 30px rgba(0,234,255,.18);
+--radius:22px;
+--speed:.28s;
 }
-.hidden{display:none!important}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+width:100%;
+height:100%;
+overflow:hidden;
+font-family:Arial,Helvetica,sans-serif;
+background:
+radial-gradient(circle at 15% 20%,rgba(0,234,255,.14),transparent 24%),
+radial-gradient(circle at 82% 25%,rgba(162,89,255,.12),transparent 22%),
+radial-gradient(circle at 50% 80%,rgba(0,255,157,.08),transparent 28%),
+linear-gradient(180deg,var(--bg2),var(--bg1));
+color:var(--txt);
+}
+
+button,input{
+font-family:inherit;
+outline:none;
+border:none;
+}
 
 #app{
-position:fixed;inset:0;
+position:relative;
+width:100%;
+height:100%;
 overflow:hidden;
 }
 
-.screen{
-position:absolute;inset:0;
+.page{
+position:absolute;
+inset:0;
 padding:18px;
-overflow:auto;
+display:none;
+overflow-y:auto;
+animation:fadeIn .35s ease;
 }
 
-.panel{
-background:rgba(255,255,255,.07);
-border:1px solid rgba(255,255,255,.08);
-border-radius:22px;
-padding:18px;
-backdrop-filter:blur(10px);
-margin-bottom:14px;
+.page.active{
+display:block;
 }
 
-h1{
-font-size:42px;
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(16px)}
+to{opacity:1;transform:none}
+}
+
+.logo{
+font-size:44px;
+font-weight:900;
 text-align:center;
-margin:14px 0;
-color:#00eaff;
-text-shadow:0 0 18px #00eaff77;
+letter-spacing:2px;
+margin-top:16px;
+color:var(--cyan);
+text-shadow:0 0 18px rgba(0,234,255,.6);
 }
-
-h2{font-size:26px;margin-bottom:12px}
 
 .sub{
 text-align:center;
-color:#b6c5d1;
-margin-bottom:14px;
-}
-
-input{
-width:100%;
-padding:14px;
+color:var(--muted);
+margin-top:8px;
+margin-bottom:20px;
 font-size:18px;
-border:none;
-border-radius:16px;
-margin:8px 0;
-background:#ffffff12;
-color:#fff;
-}
-
-button{
-width:100%;
-padding:16px;
-margin:8px 0;
-font-size:20px;
-font-weight:900;
-border:none;
-border-radius:18px;
-background:linear-gradient(90deg,#00eaff,#00ff95);
-color:#001014;
-box-shadow:0 0 18px #00eaff55;
-}
-
-button:active{transform:scale(.98)}
-
-.smallBtn{
-font-size:16px;
-padding:12px;
-}
-
-.row{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
 }
 
 .card{
-padding:14px;
+background:var(--glass);
+border:1px solid var(--line);
+border-radius:var(--radius);
+padding:16px;
+backdrop-filter:blur(12px);
+box-shadow:var(--shadow);
+margin-bottom:14px;
+}
+
+.row{
+display:flex;
+gap:12px;
+}
+
+.row>*{
+flex:1;
+}
+
+.input{
+width:100%;
+padding:15px;
+font-size:18px;
 border-radius:18px;
-background:#ffffff10;
+background:rgba(255,255,255,.08);
+color:#fff;
+border:1px solid rgba(255,255,255,.14);
+margin-bottom:12px;
+}
+
+.btn{
+width:100%;
+padding:16px;
+font-size:22px;
+font-weight:900;
+border-radius:22px;
+cursor:pointer;
+background:linear-gradient(90deg,var(--cyan),var(--green));
+color:#000;
+box-shadow:0 10px 28px rgba(0,255,157,.18);
+transition:transform .14s;
+margin-bottom:12px;
+}
+
+.btn:active{
+transform:scale(.97);
+}
+
+.btn2{
+background:rgba(255,255,255,.08);
+color:#fff;
+box-shadow:none;
+}
+
+.small{
+font-size:14px;
+color:var(--muted);
 text-align:center;
 }
 
-#topbar{
-position:fixed;
-top:0;left:0;right:0;
-height:68px;
+.topbar{
 display:flex;
-justify-content:space-evenly;
-align-items:center;
-background:#00000044;
-backdrop-filter:blur(10px);
-z-index:20;
+gap:10px;
+margin-top:8px;
+margin-bottom:14px;
 }
 
-#game{
+.pill{
+flex:1;
+padding:12px;
+border-radius:18px;
+background:rgba(255,255,255,.08);
+text-align:center;
+font-weight:700;
+}
+
+.sectionTitle{
+font-size:30px;
+font-weight:900;
+margin:8px 0 14px;
+color:var(--cyan);
+text-shadow:0 0 10px rgba(0,234,255,.4);
+}
+
+.grid2{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.tile{
+padding:20px 12px;
+border-radius:22px;
+background:var(--glass);
+border:1px solid var(--line);
+text-align:center;
+font-weight:900;
+font-size:20px;
+box-shadow:var(--shadow);
+}
+
+.coin{
+color:var(--gold);
+}
+
+#gameWrap{
 position:absolute;
-top:68px;left:0;right:0;bottom:0;
+inset:0;
+display:none;
+background:
+radial-gradient(circle at 20% 20%,rgba(0,234,255,.08),transparent 22%),
+radial-gradient(circle at 80% 20%,rgba(162,89,255,.08),transparent 22%),
+linear-gradient(180deg,#10151d,#05070d);
+overflow:hidden;
+}
+
+#hud{
+position:absolute;
+top:10px;
+left:10px;
+right:10px;
+display:flex;
+gap:8px;
+z-index:30;
+}
+
+.hudBox{
+flex:1;
+padding:10px;
+text-align:center;
+background:rgba(255,255,255,.08);
+border-radius:16px;
+font-weight:900;
+font-size:18px;
+}
+
+#arena{
+position:absolute;
+top:70px;
+left:0;
+right:0;
+bottom:0;
 overflow:hidden;
 }
 
 .shape{
 position:absolute;
-filter:drop-shadow(0 0 12px rgba(255,255,255,.35));
+border-radius:18px;
+box-shadow:0 0 24px currentColor;
 }
 
 .circle{
-width:58px;height:58px;border-radius:50%;background:#ff5757;
-}
-
-.square{
-width:58px;height:58px;background:#00ff88;
-}
-
-.rect{
-width:80px;height:48px;border-radius:12px;background:#ffd93d;
+border-radius:50%;
 }
 
 .triangle{
-width:0;height:0;
-border-left:30px solid transparent;
-border-right:30px solid transparent;
-border-bottom:58px solid #9c5cff;
+width:0!important;
+height:0!important;
+background:none!important;
+border-left:28px solid transparent;
+border-right:28px solid transparent;
+border-bottom:56px solid var(--purple);
+filter:drop-shadow(0 0 14px rgba(162,89,255,.7));
 }
 
-.gold{
-width:60px;height:60px;border-radius:50%;
-background:#ffd700;
-box-shadow:0 0 20px #ffd700;
-}
-
-.bomb{
-width:58px;height:58px;border-radius:50%;
-background:#111;border:5px solid #ff2a2a;
-}
-
-.floaty{
+#overlay{
 position:absolute;
-opacity:.08;
-animation:drift 8s linear infinite alternate;
+inset:0;
+display:none;
+justify-content:center;
+align-items:center;
+background:rgba(0,0,0,.45);
+backdrop-filter:blur(8px);
+z-index:50;
+padding:18px;
 }
 
-@keyframes drift{
-from{transform:translateY(0) rotate(0)}
-to{transform:translateY(-60px) rotate(180deg)}
+.modal{
+width:100%;
+max-width:420px;
 }
 
-.pop{
-position:absolute;
-font-size:22px;
+.rewardDay{
+padding:12px;
+border-radius:16px;
+text-align:center;
 font-weight:900;
-animation:rise .7s forwards;
+background:rgba(255,255,255,.07);
+}
+
+.rewardDay.claimed{
+background:rgba(0,255,157,.16);
+}
+
+.badge{
+padding:12px;
+border-radius:16px;
+background:rgba(255,255,255,.08);
+font-size:14px;
+font-weight:700;
+}
+
+.carousel{
+display:flex;
+gap:12px;
+overflow-x:auto;
+padding-bottom:4px;
+}
+
+.skin{
+min-width:150px;
+padding:16px;
+border-radius:22px;
+background:rgba(255,255,255,.08);
+border:1px solid var(--line);
+text-align:center;
+}
+
+.preview{
+height:70px;
+border-radius:18px;
+margin-bottom:12px;
+}
+
+.switch{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:14px 0;
+border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.footerSpace{
+height:24px;
+}
+
+.floatText{
+position:absolute;
+font-weight:900;
 pointer-events:none;
+animation:rise .7s forwards;
+z-index:40;
 }
 
 @keyframes rise{
 0%{opacity:1;transform:translateY(0) scale(1)}
-100%{opacity:0;transform:translateY(-45px) scale(1.4)}
+100%{opacity:0;transform:translateY(-60px) scale(1.3)}
 }
 
-#hand{
+.particle{
 position:absolute;
-font-size:44px;
+width:8px;
+height:8px;
+border-radius:50%;
 pointer-events:none;
-z-index:40;
-opacity:0;
-transition:.18s;
+animation:boom .7s forwards linear;
 }
 
-#reflexMode{
-position:fixed;
-inset:0;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:52px;
-font-weight:900;
-color:#00ffff;
-text-shadow:0 0 24px #00ffff;
-background:#00ffff11;
-z-index:50;
-pointer-events:none;
-}
-
-.shopItem{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:12px;
-border-radius:16px;
-background:#ffffff0e;
-margin:8px 0;
+@keyframes boom{
+from{opacity:1;transform:translate(0,0) scale(1)}
+to{opacity:0;transform:translate(var(--x),var(--y)) scale(.2)}
 }
 </style>
 </head>
@@ -212,391 +366,78 @@ margin:8px 0;
 <body>
 <div id="app">
 
-<div id="login" class="screen">
-<h1>REFLEX DROP</h1>
-<div class="sub">Login or create account</div>
+<!-- LOGIN -->
+<section class="page active" id="loginPage">
+<div class="logo">REFLEX DROP</div>
+<div class="sub">God Mode Edition 👑</div>
 
-<div class="panel">
-<input id="user" placeholder="Username">
-<input id="pass" placeholder="Password" type="password">
-<button onclick="login()">LOGIN</button>
-<button onclick="register()">REGISTER</button>
+<div class="card">
+<input id="userInput" class="input" placeholder="Username">
+<input id="passInput" class="input" placeholder="Password" type="password">
+<button class="btn" onclick="login()">LOGIN / REGISTER</button>
+<div class="small">Local device accounts • no email needed</div>
+</div>
+</section>
+
+<!-- HOME -->
+<section class="page" id="homePage">
+<div class="logo" style="font-size:34px">REFLEX DROP</div>
+<div class="sub" id="welcomeText">Welcome</div>
+
+<div class="topbar">
+<div class="pill">💰 <span id="coinsTxt">0</span></div>
+<div class="pill">🔥 <span id="streakTxt">0</span></div>
+<div class="pill">🏆 <span id="bestTxt">0</span></div>
+</div>
+
+<button class="btn" onclick="openModes()">PLAY</button>
+<button class="btn btn2" onclick="showPage('shopPage')">SHOP</button>
+<button class="btn btn2" onclick="showPage('rewardPage')">DAILY REWARD</button>
+<button class="btn btn2" onclick="showPage('statsPage')">STATS</button>
+<button class="btn btn2" onclick="showPage('achievementPage')">ACHIEVEMENTS</button>
+<button class="btn btn2" onclick="showPage('leaderPage')">LEADERBOARD</button>
+<button class="btn btn2" onclick="showPage('settingsPage')">SETTINGS</button>
+<button class="btn btn2" onclick="logout()">LOGOUT</button>
+</section>
+
+<!-- MODES -->
+<section class="page" id="modesPage">
+<div class="sectionTitle">GAME MODES</div>
+<div class="grid2">
+<div class="tile" onclick="startGame('Classic')">Classic</div>
+<div class="tile" onclick="startGame('Blitz')">Blitz</div>
+<div class="tile" onclick="startGame('Zen')">Zen</div>
+<div class="tile" onclick="startGame('Chaos')">Chaos</div>
+<div class="tile" onclick="startGame('Precision')">Precision</div>
+<div class="tile" onclick="startGame('Survival')">Survival</div>
+</div>
+<div style="margin-top:16px">
+<button class="btn btn2" onclick="showPage('homePage')">BACK</button>
+</div>
+</section>
+
+<!-- SHOP -->
+<section class="page" id="shopPage">
+<div class="sectionTitle">SHOP</div>
+<div class="carousel">
+<div class="skin">
+<div class="preview" style="background:linear-gradient(90deg,#00eaff,#00ff9d)"></div>
+Neon Skin<br><br>
+<button class="btn" onclick="buy('neon',100)">100</button>
+</div>
+
+<div class="skin">
+<div class="preview" style="background:linear-gradient(90deg,#ff7b00,#ff2d55)"></div>
+Inferno Skin<br><br>
+<button class="btn" onclick="buy('inferno',160)">160</button>
+</div>
+
+<div class="skin">
+<div class="preview" style="background:linear-gradient(90deg,#a259ff,#ff4dff)"></div>
+Ultra Skin<br><br>
+<button class="btn" onclick="buy('ultra',220)">220</button>
 </div>
 </div>
 
-<div id="menu" class="screen hidden">
-<h1>REFLEX DROP</h1>
-<div class="sub" id="welcome"></div>
-
-<div class="panel row">
-<div class="card">Coins<br><span id="coinsTxt">0</span></div>
-<div class="card">Best<br><span id="bestTxt">0</span></div>
-</div>
-
-<div class="panel">
-<button onclick="openGame()">PLAY</button>
-<button onclick="showShop()">SHOP</button>
-<button onclick="showMissions()">MISSIONS</button>
-<button onclick="showStats()">STATS</button>
-<button onclick="logout()" class="smallBtn">LOGOUT</button>
-</div>
-</div>
-
-<div id="shop" class="screen hidden">
-<h1>SHOP</h1>
-<div class="panel" id="shopList"></div>
-<button onclick="goMenu()">BACK</button>
-</div>
-
-<div id="missions" class="screen hidden">
-<h1>MISSIONS</h1>
-<div class="panel">
-<div>Score 200 = +50 coins</div>
-<div>Play 5 games = +40 coins</div>
-<div>Reach combo 10 = +80 coins</div>
-</div>
-<button onclick="goMenu()">BACK</button>
-</div>
-
-<div id="stats" class="screen hidden">
-<h1>STATS</h1>
-<div class="panel" id="statsBox"></div>
-<button onclick="goMenu()">BACK</button>
-</div>
-
-<div id="play" class="screen hidden" style="padding:0">
-<div id="topbar">
-<div class="card">Score <span id="score">0</span></div>
-<div class="card">Lives <span id="lives">5</span></div>
-<div class="card">Combo <span id="combo">0</span></div>
-</div>
-<div id="game"></div>
-</div>
-
-<div id="reflexMode" class="hidden">REFLEX MODE ⚡</div>
-<div id="hand">👉</div>
-
-</div>
-
-<script>
-let currentUser=null;
-let score=0,lives=5,combo=0;
-let playing=false;
-let spawnLoop;
-let speedBoost=0;
-let reflex=false;
-let gameCount=0;
-
-const ids=x=>document.getElementById(x);
-
-function loadUsers(){
-return JSON.parse(localStorage.getItem("rdUsers")||"{}");
-}
-function saveUsers(data){
-localStorage.setItem("rdUsers",JSON.stringify(data));
-}
-
-function defaultData(name,pw){
-return {
-password:pw,
-coins:0,
-best:0,
-games:0,
-taps:0,
-owned:["Default"],
-theme:"Default"
-};
-}
-
-function register(){
-let u=ids("user").value.trim();
-let p=ids("pass").value.trim();
-if(!u||!p)return alert("Fill both");
-
-let users=loadUsers();
-if(users[u]) return alert("Username exists");
-
-users[u]=defaultData(u,p);
-saveUsers(users);
-alert("Registered. Login now.");
-}
-
-function login(){
-let u=ids("user").value.trim();
-let p=ids("pass").value.trim();
-let users=loadUsers();
-
-if(!users[u]||users[u].password!==p) return alert("Wrong login");
-
-currentUser=u;
-showMenu();
-}
-
-function userData(){
-return loadUsers()[currentUser];
-}
-
-function updateUser(obj){
-let users=loadUsers();
-users[currentUser]=obj;
-saveUsers(users);
-}
-
-function hideAll(){
-["login","menu","shop","missions","stats","play"].forEach(x=>ids(x).classList.add("hidden"));
-}
-
-function showMenu(){
-hideAll();
-ids("menu").classList.remove("hidden");
-
-let d=userData();
-ids("welcome").innerText="Welcome, "+currentUser;
-ids("coinsTxt").innerText=d.coins;
-ids("bestTxt").innerText=d.best;
-}
-
-function goMenu(){showMenu();}
-
-function logout(){
-currentUser=null;
-hideAll();
-ids("login").classList.remove("hidden");
-}
-
-function showShop(){
-hideAll();
-ids("shop").classList.remove("hidden");
-
-let d=userData();
-
-ids("shopList").innerHTML=`
-<div class="shopItem">Blue Theme <span>100</span></div>
-<button onclick="buyTheme('Blue',100)">BUY</button>
-
-<div class="shopItem">Purple Theme <span>150</span></div>
-<button onclick="buyTheme('Purple',150)">BUY</button>
-
-<div class="shopItem">Golden Hand <span>120</span></div>
-<button onclick="buyHand()">BUY</button>
-`;
-}
-
-function buyTheme(name,cost){
-let d=userData();
-if(d.coins<cost) return alert("Not enough coins");
-d.coins-=cost;
-d.theme=name;
-updateUser(d);
-alert(name+" theme bought");
-showShop();
-}
-
-function buyHand(){
-let d=userData();
-if(d.coins<120) return alert("Not enough coins");
-d.coins-=120;
-updateUser(d);
-alert("Golden hand unlocked");
-showShop();
-}
-
-function showMissions(){
-hideAll();
-ids("missions").classList.remove("hidden");
-}
-
-function showStats(){
-hideAll();
-ids("stats").classList.remove("hidden");
-
-let d=userData();
-ids("statsBox").innerHTML=`
-Games Played: ${d.games}<br><br>
-Best Score: ${d.best}<br><br>
-Total Taps: ${d.taps}<br><br>
-Coins: ${d.coins}
-`;
-}
-
-function openGame(){
-hideAll();
-ids("play").classList.remove("hidden");
-startGame();
-}
-
-function startGame(){
-score=0;lives=5;combo=0;
-speedBoost=0;
-playing=true;
-
-ids("score").innerText=0;
-ids("lives").innerText=5;
-ids("combo").innerText=0;
-ids("game").innerHTML="";
-
-spawnLoop=setInterval(spawnShape,850);
-
-setInterval(()=>{
-speedBoost+=0.25;
-},12000);
-}
-
-function rand(a){
-return a[Math.floor(Math.random()*a.length)];
-}
-
-function shapeType(){
-let r=Math.random();
-if(r<0.06)return "gold";
-if(r<0.11)return "bomb";
-return rand(["circle","square","rect","triangle"]);
-}
-
-function points(t){
-if(t=="gold")return 50;
-if(t=="circle")return 20;
-if(t=="square")return 4;
-if(t=="triangle")return 3;
-if(t=="rect")return 2;
-return 0;
-}
-
-function spawnShape(){
-if(!playing)return;
-
-const t=shapeType();
-const s=document.createElement("div");
-s.className="shape "+t;
-
-let x=Math.random()*(innerWidth-90);
-let y=-80;
-let speed=2+Math.random()*2+speedBoost;
-
-if(reflex)speed*=0.55;
-
-s.style.left=x+"px";
-s.style.top=y+"px";
-
-ids("game").appendChild(s);
-
-s.onclick=()=>{
-handHit(x,y);
-
-let d=userData();
-d.taps++;
-
-if(t=="bomb"){
-lives--;
-combo=0;
-pop("BOOM",x,y,"#ff4444");
-}else{
-combo++;
-let gain=points(t);
-
-if(reflex)gain*=2;
-score+=gain;
-d.coins+=Math.ceil(gain/5);
-
-if(combo==5 && Math.random()<0.4) activateReflex();
-if(combo==10 && Math.random()<0.7) activateReflex();
-
-pop("+"+gain,x,y,"#00ffff");
-}
-
-updateUser(d);
-updateHUD();
-
-s.remove();
-
-if(lives<=0) gameOver();
-};
-
-const fall=setInterval(()=>{
-if(!document.body.contains(s)){
-clearInterval(fall);
-return;
-}
-
-y+=speed;
-s.style.top=y+"px";
-
-if(y>innerHeight){
-clearInterval(fall);
-s.remove();
-
-if(t!="bomb"){
-lives--;
-combo=0;
-updateHUD();
-if(lives<=0)gameOver();
-}
-}
-},16);
-}
-
-function updateHUD(){
-ids("score").innerText=score;
-ids("lives").innerText=lives;
-ids("combo").innerText=combo;
-}
-
-function pop(txt,x,y,color){
-let p=document.createElement("div");
-p.className="pop";
-p.innerText=txt;
-p.style.left=x+"px";
-p.style.top=y+"px";
-p.style.color=color;
-ids("game").appendChild(p);
-setTimeout(()=>p.remove(),700);
-}
-
-function handHit(x,y){
-let h=ids("hand");
-h.style.left=(x-30)+"px";
-h.style.top=(y+60)+"px";
-h.style.opacity=1;
-h.style.transform="translate(0,0) scale(1)";
-
-setTimeout(()=>{
-h.style.transform="translate(18px,-38px) scale(1.18)";
-},20);
-
-setTimeout(()=>{
-h.style.opacity=0;
-},180);
-}
-
-function activateReflex(){
-if(reflex)return;
-reflex=true;
-ids("reflexMode").classList.remove("hidden");
-
-setTimeout(()=>{
-reflex=false;
-ids("reflexMode").classList.add("hidden");
-},5000);
-}
-
-function gameOver(){
-playing=false;
-clearInterval(spawnLoop);
-
-let d=userData();
-d.games++;
-
-if(score>d.best)d.best=score;
-
-if(score>=200)d.coins+=50;
-if(d.games>=5)d.coins+=40;
-if(combo>=10)d.coins+=80;
-
-updateUser(d);
-
-alert("Game Over! Score: "+score);
-showMenu();
-}
-</script>
-</body>
-</html>
+<button class="btn btn2" onclick="showPage('homePage')">BACK</button>
+</section>
