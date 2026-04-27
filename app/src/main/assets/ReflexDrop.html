@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Reflex Drop GOD MODE</title>
+
+<style>
+:root{
+--bg1:#05070d;
+--bg2:#111827;
+--glass:rgba(255,255,255,.08);
+--line:rgba(255,255,255,.12);
+--txt:#eef6ff;
+--muted:#97a5bf;
+--cyan:#00eaff;
+--green:#00ff9d;
+--gold:#ffd95a;
+--red:#ff4d6d;
+--purple:#a259ff;
+--radius:22px;
+--shadow:0 0 28px rgba(0,234,255,.15);
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+width:100%;
+height:100%;
+overflow:hidden;
+font-family:Arial,Helvetica,sans-serif;
+background:
+radial-gradient(circle at 15% 20%,rgba(0,234,255,.14),transparent 24%),
+radial-gradient(circle at 82% 25%,rgba(162,89,255,.12),transparent 22%),
+linear-gradient(180deg,var(--bg2),var(--bg1));
+color:var(--txt);
+}
+
+button,input{
+border:none;
+outline:none;
+font-family:inherit;
+}
+
+#app{
+width:100%;
+height:100%;
+position:relative;
+overflow:hidden;
+}
+
+.page{
+position:absolute;
+inset:0;
+padding:18px;
+display:none;
+overflow-y:auto;
+}
+
+.page.active{
+display:block;
+animation:fade .25s ease;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(10px)}
+to{opacity:1;transform:none}
+}
+
+.logo{
+font-size:44px;
+font-weight:900;
+text-align:center;
+margin-top:18px;
+color:var(--cyan);
+text-shadow:0 0 18px rgba(0,234,255,.55);
+}
+
+.sub{
+text-align:center;
+margin:10px 0 18px;
+font-size:18px;
+color:var(--muted);
+}
+
+.card{
+background:var(--glass);
+border:1px solid var(--line);
+border-radius:var(--radius);
+padding:16px;
+backdrop-filter:blur(10px);
+box-shadow:var(--shadow);
+margin-bottom:14px;
+}
+
+.input{
+width:100%;
+padding:15px;
+font-size:20px;
+border-radius:18px;
+background:rgba(255,255,255,.08);
+color:#fff;
+border:1px solid rgba(255,255,255,.12);
+margin-bottom:12px;
+}
+
+.btn{
+width:100%;
+padding:16px;
+font-size:22px;
+font-weight:900;
+border-radius:22px;
+background:linear-gradient(90deg,var(--cyan),var(--green));
+color:#000;
+margin-bottom:12px;
+}
+
+.btn2{
+background:rgba(255,255,255,.08);
+color:#fff;
+}
+
+.small{
+font-size:14px;
+text-align:center;
+color:var(--muted);
+}
+
+.topbar{
+display:flex;
+gap:10px;
+margin-bottom:14px;
+}
+
+.pill{
+flex:1;
+padding:12px;
+border-radius:18px;
+text-align:center;
+font-weight:900;
+background:rgba(255,255,255,.08);
+}
+
+.sectionTitle{
+font-size:30px;
+font-weight:900;
+margin-bottom:14px;
+color:var(--cyan);
+}
+
+.grid2{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.tile{
+padding:20px;
+border-radius:22px;
+background:var(--glass);
+border:1px solid var(--line);
+text-align:center;
+font-weight:900;
+font-size:20px;
+}
+
+#gameWrap{
+position:absolute;
+inset:0;
+display:none;
+background:linear-gradient(180deg,#10151d,#05070d);
+}
+
+#hud{
+position:absolute;
+top:10px;
+left:10px;
+right:10px;
+display:flex;
+gap:8px;
+z-index:5;
+}
+
+.hudBox{
+flex:1;
+padding:10px;
+text-align:center;
+font-weight:900;
+background:rgba(255,255,255,.08);
+border-radius:16px;
+}
+
+#arena{
+position:absolute;
+top:70px;
+left:0;
+right:0;
+bottom:0;
+overflow:hidden;
+}
+
+.shape{
+position:absolute;
+width:58px;
+height:58px;
+border-radius:18px;
+}
+
+.circle{border-radius:50%;}
+.triangle{
+width:0!important;
+height:0!important;
+border-left:28px solid transparent;
+border-right:28px solid transparent;
+border-bottom:56px solid var(--purple);
+background:none!important;
+}
+
+#overlay{
+position:absolute;
+inset:0;
+display:none;
+justify-content:center;
+align-items:center;
+background:rgba(0,0,0,.45);
+padding:18px;
+}
+
+.float{
+position:absolute;
+font-weight:900;
+animation:rise .7s forwards;
+pointer-events:none;
+}
+
+@keyframes rise{
+from{opacity:1;transform:translateY(0)}
+to{opacity:0;transform:translateY(-60px)}
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+<!-- LOGIN -->
+<section class="page active" id="loginPage">
+<div class="logo">REFLEX DROP</div>
+<div class="sub">God Mode Edition 👑</div>
+
+<div class="card">
+<input id="userInput" class="input" placeholder="Username">
+<input id="passInput" class="input" placeholder="Password" type="password">
+<button class="btn" onclick="login()">LOGIN / REGISTER</button>
+<div class="small">Local save • no email needed</div>
+</div>
+</section>
+
+<!-- HOME -->
+<section class="page" id="homePage">
+<div class="logo" style="font-size:34px">REFLEX DROP</div>
+<div class="sub" id="welcomeText">Welcome</div>
+
+<div class="topbar">
+<div class="pill">💰 <span id="coinsTxt">0</span></div>
+<div class="pill">🏆 <span id="bestTxt">0</span></div>
+<div class="pill">🔥 <span id="comboTxt">0</span></div>
+</div>
+
+<button class="btn" onclick="showPage('modesPage')">PLAY</button>
+<button class="btn btn2" onclick="logout()">LOGOUT</button>
+</section>
+
+<!-- MODES -->
+<section class="page" id="modesPage">
+<div class="sectionTitle">GAME MODES</div>
+
+<div class="grid2">
+<div class="tile" onclick="startGame('Classic')">Classic</div>
+<div class="tile" onclick="startGame('Blitz')">Blitz</div>
+<div class="tile" onclick="startGame('Chaos')">Chaos</div>
+<div class="tile" onclick="startGame('Zen')">Zen</div>
+</div>
+
+<div style="margin-top:14px">
+<button class="btn btn2" onclick="showPage('homePage')">BACK</button>
+</div>
+</section>
+
+<!-- GAME -->
+<div id="gameWrap">
+
+<div id="hud">
+<div class="hudBox">Score <span id="gScore">0</span></div>
+<div class="hudBox">Lives <span id="gLives">5</span></div>
+<div class="hudBox">Combo <span id="gCombo">0</span></div>
+</div>
+
+<div id="arena"></div>
+
+<div id="overlay">
+<div class="card" style="width:100%;max-width:420px">
+<div class="sectionTitle">GAME OVER</div>
+<div class="sub" id="finalScore">Score: 0</div>
+<button class="btn" onclick="closeGame()">HOME</button>
+<button class="btn btn2" onclick="restartGame()">PLAY AGAIN</button>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+/* DATA */
+let users = JSON.parse(localStorage.getItem("rd_users") || "{}");
+let current = localStorage.getItem("rd_last") || "";
+let data = null;
+
+let game = {
+running:false,
+mode:"Classic",
+score:0,
+lives:5,
+combo:0,
+loop:null,
+speed:900
+};
+
+const pages = document.querySelectorAll(".page");
+const arena = document.getElementById("arena");
+
+/* HELPERS */
+function saveUsers(){
+localStorage.setItem("rd_users",JSON.stringify(users));
+}
+
+function saveCurrent(){
+if(!data) return;
+users[data.username]=data;
+saveUsers();
+localStorage.setItem("rd_last",data.username);
+}
+
+function defaultUser(u,p){
+return {
+username:u,
+password:p,
+coins:0,
+best:0,
+bestCombo:0
+};
+}
+
+function showPage(id){
+pages.forEach(p=>p.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+refreshUI();
+}
+
+/* LOGIN */
+function login(){
+let u = document.getElementById("userInput").value.trim();
+let p = document.getElementById("passInput").value.trim();
+
+if(!u || !p){
+alert("Enter username and password");
+return;
+}
+
+if(!users[u]){
+users[u]=defaultUser(u,p);
+saveUsers();
+}
+
+if(users[u].password !== p){
+alert("Wrong password");
+return;
+}
+
+data = users[u];
+saveCurrent();
+showPage("homePage");
+}
+
+function logout(){
+data=null;
+localStorage.removeItem("rd_last");
+showPage("loginPage");
+}
+
+/* UI */
+function refreshUI(){
+if(!data) return;
+
+document.getElementById("welcomeText").innerText =
+"Welcome, " + data.username;
+
+document.getElementById("coinsTxt").innerText = data.coins;
+document.getElementById("bestTxt").innerText = data.best;
+document.getElementById("comboTxt").innerText = data.bestCombo;
+}
+
+/* GAME */
+function config(mode){
+if(mode==="Classic") return {speed:900,lives:5};
+if(mode==="Blitz") return {speed:600,lives:3};
+if(mode==="Chaos") return {speed:430,lives:4};
+if(mode==="Zen") return {speed:1100,lives:99};
+return {speed:900,lives:5};
+}
+
+function startGame(mode){
+let c = config(mode);
+
+game.mode = mode;
+game.running = true;
+game.score = 0;
+game.combo = 0;
+game.lives = c.lives;
+game.speed = c.speed;
+
+arena.innerHTML="";
+document.getElementById("overlay").style.display="none";
+document.getElementById("gameWrap").style.display="block";
+
+updateHUD();
+
+clearInterval(game.loop);
+game.loop = setInterval(spawnShape,game.speed);
+}
+
+function restartGame(){
+startGame(game.mode);
+}
+
+function closeGame(){
+clearInterval(game.loop);
+game.running=false;
+document.getElementById("gameWrap").style.display="none";
+showPage("homePage");
+}
+
+function updateHUD(){
+document.getElementById("gScore").innerText = game.score;
+document.getElementById("gLives").innerText = game.lives;
+document.getElementById("gCombo").innerText = game.combo;
+}
+
+function rand(a,b){
+return Math.random()*(b-a)+a;
+}
+
+function pick(){
+let r=Math.random();
+if(r<.25) return "circle";
+if(r<.5) return "square";
+if(r<.75) return "triangle";
+return "gold";
+}
+
+function points(type){
+if(type==="circle") return 20;
+if(type==="square") return 4;
+if(type==="triangle") return 3;
+if(type==="gold") return 50;
+return 1;
+}
+
+function spawnShape(){
+if(!game.running) return;
+
+let type = pick();
+let el = document.createElement("div");
+el.className="shape";
+
+if(type==="circle"){
+el.classList.add("circle");
+el.style.background="#ff4d6d";
+}
+if(type==="square"){
+el.style.background="#00ff9d";
+}
+if(type==="triangle"){
+el.classList.add("triangle");
+}
+if(type==="gold"){
+el.classList.add("circle");
+el.style.background="#ffd95a";
+}
+
+let x = rand(10,window.innerWidth-70);
+let y = -70;
+let speed = rand(2.5,5);
+
+el.style.left=x+"px";
+el.style.top=y+"px";
+
+arena.appendChild(el);
+
+el.onclick=()=>{
+if(!game.running) return;
+
+let pts = points(type);
+game.score += pts;
+game.combo++;
+
+if(game.combo > data.bestCombo){
+data.bestCombo = game.combo;
+}
+
+data.coins += Math.ceil(pts/5);
+
+floatText("+"+pts,x,y);
+
+el.remove();
+updateHUD();
+saveCurrent();
+};
+
+let fall = setInterval(()=>{
+if(!document.body.contains(el)){
+clearInterval(fall);
+return;
+}
+
+y += speed;
+el.style.top = y+"px";
+
+if(y > window.innerHeight-90){
+clearInterval(fall);
+if(document.body.contains(el)) el.remove();
+
+game.lives--;
+game.combo=0;
+updateHUD();
+
+if(game.lives<=0){
+endGame();
+}
+}
+},16);
+}
+
+function endGame(){
+clearInterval(game.loop);
+game.running=false;
+
+if(game.score > data.best){
+data.best = game.score;
+}
+
+saveCurrent();
+
+document.getElementById("finalScore").innerText =
+"Score: " + game.score;
+
+document.getElementById("overlay").style.display="flex";
+}
+
+function floatText(t,x,y){
+let f=document.createElement("div");
+f.className="float";
+f.innerText=t;
+f.style.left=x+"px";
+f.style.top=y+"px";
+f.style.color="#00ff9d";
+arena.appendChild(f);
+setTimeout(()=>f.remove(),700);
+}
+
+/* AUTO LOGIN */
+window.onload=()=>{
+if(current && users[current]){
+data = users[current];
+showPage("homePage");
+}else{
+showPage("loginPage");
+}
+};
+</script>
+
+</body>
+</html>
