@@ -19,11 +19,21 @@ public class MainActivity extends Activity {
         settings.setDomStorageEnabled(true);
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(true);
+        settings.setDatabaseEnabled(true);
+        settings.setLoadsImagesAutomatically(true);
+        settings.setMediaPlaybackRequiresUserGesture(false);
 
         web.setWebViewClient(new WebViewClient());
 
-        web.loadUrl("file:///android_asset/ReflexDrop/index.html");
+        web.loadUrl("file:///android_asset/ReflexDrop/html/index.html");
 
         setContentView(web);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Back inside WebView first
+        WebView web = (WebView) findViewById(android.R.id.content).getRootView();
+        super.onBackPressed();
     }
 }
