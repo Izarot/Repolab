@@ -1,1 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>Store</title>
 
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/themes.css">
+
+<script defer src="../js/save.js"></script>
+<script defer src="../js/store.js"></script>
+<script defer src="../js/main.js"></script>
+</head>
+
+<body class="theme-neon">
+
+<section class="screen active">
+<h1 class="logo smallLogo">STORE</h1>
+<p class="tag">Spend coins wisely 😏</p>
+
+<div class="statsRow">
+<div class="miniCard wide">
+<span>Your Coins</span>
+<b id="coinCount">0</b>
+</div>
+</div>
+
+<button class="btn" onclick="buyItem('Inferno',100)">Inferno Skin • 100</button>
+<button class="btn" onclick="buyItem('Ultra',180)">Ultra Skin • 180</button>
+<button class="btn" onclick="buyItem('Void',250)">Void Skin • 250</button>
+
+<button class="btn ghost" onclick="goPage('index.html')">BACK</button>
+</section>
+
+</body>
+</html>
