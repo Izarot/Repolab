@@ -1,1 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Story Mode</title>
 
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/themes.css">
+<link rel="stylesheet" href="../css/boss.css">
+
+<script defer src="../js/save.js"></script>
+<script defer src="../js/story.js"></script>
+<script defer src="../js/main.js"></script>
+</head>
+
+<body class="theme-neon">
+
+<section class="screen active">
+<h1 class="logo smallLogo">STORY MODE</h1>
+<p class="tag">Rise through the drop realms ⚔️</p>
+
+<div class="card" id="storyBox">
+<div class="chapter">
+<h3>Chapter 1</h3>
+<p>Neon Plains</p>
+<button class="btn" onclick="startChapter(1)">PLAY</button>
+</div>
+
+<div class="chapter">
+<h3>Boss</h3>
+<p>Square Tyrant</p>
+<button class="btn ghost" onclick="startBoss(1)">FIGHT</button>
+</div>
+</div>
+
+<button class="btn ghost" onclick="goPage('index.html')">BACK</button>
+</section>
+
+</body>
+</html>
