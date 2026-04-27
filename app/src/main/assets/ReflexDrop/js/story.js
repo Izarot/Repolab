@@ -1,26 +1,32 @@
-let chapter = Number(localStorage.getItem("rd_chapter") || 1);
+let chapter =
+Number(localStorage.getItem("rd_chapter") || 1);
 
 const storyData = [
+
 {
 title:"Chapter 1: Falling Dawn",
-goal:25,
+goal:15,
 boss:"Triangle Tyrant"
 },
+
 {
 title:"Chapter 2: Circle Revolt",
-goal:40,
+goal:25,
 boss:"Cyclone Circle"
 },
+
 {
 title:"Chapter 3: Golden Storm",
-goal:60,
+goal:40,
 boss:"King Square"
 },
+
 {
 title:"Chapter 4: Final Geometry",
-goal:90,
+goal:60,
 boss:"Polygon Emperor"
 }
+
 ];
 
 function saveChapter(){
@@ -28,10 +34,11 @@ localStorage.setItem("rd_chapter", chapter);
 }
 
 function openStory(){
+
 let s = storyData[chapter - 1];
 
 if(!s){
-alert("All chapters cleared 👑");
+alert("All story chapters cleared 👑");
 return;
 }
 
@@ -45,6 +52,7 @@ s.title +
 function checkStoryProgress(){
 
 let s = storyData[chapter - 1];
+
 if(!s) return;
 
 if(bestCombo >= s.goal){
@@ -54,9 +62,10 @@ let reward = s.goal;
 addCoins(reward);
 
 alert(
-"Chapter Cleared!\n" +
+"CHAPTER CLEARED!\n\n" +
 s.title +
-"\n+" + reward + " coins"
+"\nBoss Defeated: " + s.boss +
+"\nReward: +" + reward + " coins"
 );
 
 chapter++;
