@@ -1,44 +1,26 @@
-function addCoins(amount){
-coins += amount;
+function buyItem(name,cost){
 
-if(coins < 0){
-coins = 0;
+loadData();
+
+if(RD.coins < cost){
+alert("Not enough coins.");
+return;
 }
 
-saveCoins();
-updateCoins();
+if(!RD.inventory){
+RD.inventory = ["Default"];
 }
 
-function spendCoins(amount){
-
-if(coins >= amount){
-coins -= amount;
-saveCoins();
-updateCoins();
-return true;
+if(RD.inventory.includes(name)){
+alert("Already owned.");
+return;
 }
 
-return false;
-}
+RD.coins -= cost;
+RD.inventory.push(name);
 
-function rewardRun(){
+saveData();
 
-addCoins(bestCombo);
-
-let bonus = comboBonus();
-
-if(bonus > 0){
-addCoins(bonus);
-}
-
-return bestCombo + bonus;
-}
-
-function comboBonus(){
-
-if(bestCombo >= 100) return 50;
-if(bestCombo >= 50) return 20;
-if(bestCombo >= 25) return 10;
-
-return 0;
+alert(name + " purchased!");
+location.reload();
 }
