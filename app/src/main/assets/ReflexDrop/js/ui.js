@@ -1,94 +1,47 @@
-function openInventory(){
+function toggleSound(){
 
-let text =
-"INVENTORY 🎒\n\n";
-
-inventory.forEach(item=>{
-text += "• " + item + "\n";
-});
-
-text +=
-"\nEquipped: " + equippedSkin +
-"\n\nType skin name to equip.";
-
-let pick = prompt(text);
-
-if(!pick) return;
-
-equipSkin(pick.trim());
+if(RD.sound === undefined){
+RD.sound = true;
 }
 
-function openStore(){
+RD.sound = !RD.sound;
+saveData();
 
-let text =
-"STORE 🛒\n\n";
-
-shopItems.forEach((item,i)=>{
-
-text +=
-(i+1) + ". " +
-item.name +
-" - " +
-item.price +
-" coins\n";
-
-});
-
-text +=
-"\nEnter number to buy.";
-
-let pick = prompt(text);
-
-if(!pick) return;
-
-pick = Number(pick) - 1;
-
-if(shopItems[pick]){
-
-buyItem(
-shopItems[pick].name,
-shopItems[pick].price
-);
-
-}else{
-alert("Invalid choice.");
-}
+alert("Sound: " + (RD.sound ? "ON" : "OFF"));
 }
 
-function openAchievements(){
+function toggleVibration(){
 
-let badges = [];
-
-if(bestCombo >= 10)
-badges.push("🔥 Combo x10");
-
-if(bestCombo >= 25)
-badges.push("⚡ Combo x25");
-
-if(bestCombo >= 50)
-badges.push("👑 Combo x50");
-
-if(coins >= 100)
-badges.push("💰 100 Coins");
-
-if(chapter >= 3)
-badges.push("📖 Story Warrior");
-
-if(chapter >= 5)
-badges.push("🌌 Geometry Savior");
-
-if(badges.length === 0){
-badges.push("No badges yet...");
+if(RD.vibration === undefined){
+RD.vibration = true;
 }
 
-alert(
-"ACHIEVEMENTS 🏆\n\n" +
-badges.join("\n")
-);
+RD.vibration = !RD.vibration;
+saveData();
+
+alert("Vibration: " + (RD.vibration ? "ON" : "OFF"));
 }
 
-window.onload = ()=>{
+function cycleTheme(){
 
-updateCoins();
-applySkin();
-};
+let all = [
+"theme-neon",
+"theme-inferno",
+"theme-ultra"
+];
+
+let i = all.indexOf(RD.theme);
+i++;
+
+if(i >= all.length){
+i = 0;
+}
+
+RD.theme = all[i];
+
+document.body.className = RD.theme;
+
+saveData();
+
+alert("Theme changed");
+}
