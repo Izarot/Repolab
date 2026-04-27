@@ -1,1 +1,47 @@
 
+@media (max-width:600px){
+
+.logo{
+font-size:34px;
+}
+
+.smallLogo{
+font-size:28px;
+}
+
+.tag{
+font-size:14px;
+}
+
+.btn{
+font-size:17px;
+padding:14px;
+}
+
+.input{
+font-size:16px;
+padding:13px;
+}
+
+.statsRow{
+grid-template-columns:1fr;
+}
+
+.wide{
+grid-column:auto;
+}
+
+.miniCard b{
+font-size:20px;
+}
+
+#arena{
+height:58vh;
+}
+
+.rowLine{
+flex-direction:column;
+align-items:flex-start;
+gap:8px;
+}
+}
