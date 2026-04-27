@@ -13,11 +13,28 @@
 }
 
 body{
-    background:#0f0f12;
-    color:white;
     font-family:Arial, sans-serif;
     overflow:hidden;
     user-select:none;
+    background:linear-gradient(180deg,#07111a,#10151f,#0b0d14);
+    color:white;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(circle at 20% 20%, #00eaff22 0%, transparent 25%),
+      radial-gradient(circle at 80% 30%, #ff00aa22 0%, transparent 25%),
+      radial-gradient(circle at 50% 80%, #00ff8822 0%, transparent 25%);
+    animation:bgmove 8s linear infinite alternate;
+    z-index:-1;
+}
+
+@keyframes bgmove{
+    from{transform:scale(1);}
+    to{transform:scale(1.15);}
 }
 
 #topbar{
@@ -25,19 +42,26 @@ body{
     top:0;
     left:0;
     right:0;
-    height:60px;
-    background:#18181d;
+    height:64px;
     display:flex;
     justify-content:space-around;
     align-items:center;
+    background:#0c1119dd;
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid #ffffff18;
     font-size:22px;
     z-index:1000;
-    border-bottom:2px solid #333;
+}
+
+.card{
+    padding:8px 14px;
+    border-radius:14px;
+    background:#ffffff10;
 }
 
 #game{
     position:absolute;
-    top:60px;
+    top:64px;
     left:0;
     right:0;
     bottom:0;
@@ -47,35 +71,54 @@ body{
 #menu{
     position:fixed;
     inset:0;
-    background:#0f0f12;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    gap:20px;
-    z-index:2000;
     text-align:center;
-    padding:20px;
+    gap:16px;
+    padding:24px;
+    background:#07111add;
+    backdrop-filter:blur(6px);
+    z-index:2000;
 }
 
-#menu h1{
-    font-size:48px;
+.logo{
+    font-size:52px;
+    font-weight:bold;
     color:#00eaff;
+    text-shadow:0 0 18px #00eaff99;
+    animation:pulse 2s infinite;
 }
 
-#menu p{
-    font-size:20px;
-    color:#ccc;
+@keyframes pulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.04);}
+}
+
+.sub{
+    color:#cfd6df;
+    font-size:18px;
+}
+
+.small{
+    color:#8ca0b3;
+    font-size:16px;
 }
 
 button{
-    padding:14px 30px;
-    font-size:24px;
     border:none;
-    border-radius:14px;
-    background:#00eaff;
-    color:black;
+    border-radius:18px;
+    padding:16px 34px;
+    font-size:24px;
     font-weight:bold;
+    background:linear-gradient(90deg,#00eaff,#00ff95);
+    color:#001014;
+    box-shadow:0 0 18px #00eaff66;
+}
+
+button:active{
+    transform:scale(.96);
 }
 
 .shape{
@@ -83,22 +126,26 @@ button{
 }
 
 .circle{
-    width:60px;
-    height:60px;
+    width:58px;
+    height:58px;
     border-radius:50%;
-    background:#ff3b3b;
+    background:#ff4a57;
+    box-shadow:0 0 18px #ff4a57aa;
 }
 
 .square{
-    width:60px;
-    height:60px;
-    background:#00ff66;
+    width:58px;
+    height:58px;
+    background:#00ff88;
+    box-shadow:0 0 18px #00ff88aa;
 }
 
 .rect{
-    width:80px;
-    height:50px;
-    background:#ffd000;
+    width:78px;
+    height:48px;
+    background:#ffd43b;
+    border-radius:8px;
+    box-shadow:0 0 18px #ffd43baa;
 }
 
 .triangle{
@@ -106,16 +153,34 @@ button{
     height:0;
     border-left:30px solid transparent;
     border-right:30px solid transparent;
-    border-bottom:60px solid #9b59ff;
+    border-bottom:58px solid #9d5cff;
+    filter:drop-shadow(0 0 12px #9d5cffaa);
 }
 
 .flash{
-    animation:pop 0.25s forwards;
+    animation:boom .25s forwards;
 }
 
-@keyframes pop{
+@keyframes boom{
     from{transform:scale(1);opacity:1;}
-    to{transform:scale(1.8);opacity:0;}
+    to{transform:scale(1.7);opacity:0;}
+}
+
+.combo{
+    position:fixed;
+    top:80px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:22px;
+    color:#00ff95;
+    font-weight:bold;
+    animation:rise .7s forwards;
+    z-index:3000;
+}
+
+@keyframes rise{
+    from{opacity:1; transform:translateX(-50%) translateY(0);}
+    to{opacity:0; transform:translateX(-50%) translateY(-30px);}
 }
 </style>
 </head>
@@ -123,125 +188,147 @@ button{
 <body>
 
 <div id="topbar">
-    <div>Score: <span id="score">0</span></div>
-    <div>Lives: <span id="lives">5</span></div>
+    <div class="card">Score: <span id="score">0</span></div>
+    <div class="card">Lives: <span id="lives">5</span></div>
+    <div class="card">Best: <span id="best">0</span></div>
 </div>
 
 <div id="game"></div>
 
-<div id="menu">
-    <h1>Reflex Drop 🎯</h1>
-    <p>Tap falling shapes fast.</p>
-    <p>Equal sides = more points.</p>
-    <button onclick="startGame()">START</button>
-</div>
+<div id="menu"></div>
 
 <script>
-let score = 0;
-let lives = 5;
-let playing = false;
+let score=0;
+let lives=5;
+let playing=false;
 let spawnLoop;
+let combo=0;
 
-const game = document.getElementById("game");
-const scoreText = document.getElementById("score");
-const livesText = document.getElementById("lives");
-const menu = document.getElementById("menu");
+const game=document.getElementById("game");
+const scoreText=document.getElementById("score");
+const livesText=document.getElementById("lives");
+const bestText=document.getElementById("best");
+const menu=document.getElementById("menu");
+
+let best=localStorage.getItem("reflexBest") || 0;
+bestText.textContent=best;
+
+showHome();
+
+function showHome(){
+menu.innerHTML=`
+<div class="logo">REFLEX DROP</div>
+<div class="sub">Tap falling shapes fast.</div>
+<div class="small">Equal sides = more points.</div>
+<div class="small">Best Score: ${best}</div>
+<button onclick="startGame()">PLAY</button>
+`;
+}
 
 function startGame(){
-    score = 0;
-    lives = 5;
-    updateUI();
-    menu.style.display = "none";
-    playing = true;
+score=0;
+lives=5;
+combo=0;
+updateUI();
+menu.style.display="none";
+game.innerHTML="";
+playing=true;
 
-    spawnLoop = setInterval(spawnShape, 850);
+spawnLoop=setInterval(spawnShape,800);
 }
 
 function updateUI(){
-    scoreText.textContent = score;
-    livesText.textContent = lives;
+scoreText.textContent=score;
+livesText.textContent=lives;
+bestText.textContent=best;
 }
 
 function randomType(){
-    const types = ["circle","square","triangle","rect"];
-    return types[Math.floor(Math.random()*types.length)];
+const types=["circle","square","triangle","rect"];
+return types[Math.floor(Math.random()*types.length)];
 }
 
 function getPoints(type){
-    if(type === "circle") return 20;
-    if(type === "square") return 4;
-    if(type === "triangle") return Math.random() < 0.5 ? 2 : 3;
-    if(type === "rect") return 2;
-    return 1;
+if(type==="circle") return 20;
+if(type==="square") return 4;
+if(type==="triangle") return Math.random()<0.5 ? 2 : 3;
+if(type==="rect") return 2;
+return 1;
 }
 
 function spawnShape(){
-    if(!playing) return;
+if(!playing) return;
 
-    const type = randomType();
-    const shape = document.createElement("div");
-    shape.classList.add("shape", type);
+const type=randomType();
+const shape=document.createElement("div");
+shape.className="shape "+type;
 
-    let x = Math.random() * (window.innerWidth - 90);
-    let y = -80;
-    let speed = 2 + Math.random() * 3;
+let x=Math.random()*(window.innerWidth-90);
+let y=-80;
+let speed=2+Math.random()*3+(score/80);
 
-    shape.style.left = x + "px";
-    shape.style.top = y + "px";
+shape.style.left=x+"px";
+shape.style.top=y+"px";
 
-    game.appendChild(shape);
+game.appendChild(shape);
 
-    shape.onclick = () => {
-        score += getPoints(type);
-        updateUI();
-        shape.classList.add("flash");
-        setTimeout(()=>shape.remove(),200);
-    };
+shape.onclick=()=>{
+let gain=getPoints(type);
+combo++;
+if(combo>=5) gain+=combo;
 
-    const fall = setInterval(()=>{
-        if(!document.body.contains(shape)){
-            clearInterval(fall);
-            return;
-        }
+score+=gain;
+if(score>best){
+best=score;
+localStorage.setItem("reflexBest",best);
+}
 
-        y += speed;
-        shape.style.top = y + "px";
+updateUI();
+shape.classList.add("flash");
+showCombo("+"+gain);
+setTimeout(()=>shape.remove(),220);
+};
 
-        if(y > window.innerHeight){
-            clearInterval(fall);
-            shape.remove();
+const fall=setInterval(()=>{
+if(!document.body.contains(shape)){
+clearInterval(fall);
+return;
+}
 
-            lives--;
-            updateUI();
+y+=speed;
+shape.style.top=y+"px";
 
-            if(lives <= 0){
-                gameOver();
-            }
-        }
-    },16);
+if(y>window.innerHeight){
+clearInterval(fall);
+shape.remove();
+combo=0;
+lives--;
+updateUI();
+
+if(lives<=0) gameOver();
+}
+},16);
+}
+
+function showCombo(text){
+const el=document.createElement("div");
+el.className="combo";
+el.textContent=text;
+document.body.appendChild(el);
+setTimeout(()=>el.remove(),700);
 }
 
 function gameOver(){
-    playing = false;
-    clearInterval(spawnLoop);
+playing=false;
+clearInterval(spawnLoop);
 
-    menu.style.display = "flex";
-    menu.innerHTML = `
-        <h1>Game Over 💀</h1>
-        <p>Your Score: ${score}</p>
-        <button onclick="restartGame()">PLAY AGAIN</button>
-    `;
-}
-
-function restartGame(){
-    game.innerHTML = "";
-    menu.innerHTML = `
-        <h1>Reflex Drop 🎯</h1>
-        <p>Tap falling shapes fast.</p>
-        <p>Equal sides = more points.</p>
-        <button onclick="startGame()">START</button>
-    `;
-    startGame();
+menu.style.display="flex";
+menu.innerHTML=`
+<div class="logo">GAME OVER</div>
+<div class="sub">Score: ${score}</div>
+<div class="small">Best: ${best}</div>
+<button onclick="startGame()">PLAY AGAIN</button>
+`;
 }
 </script>
 
