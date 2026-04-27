@@ -1,1 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Settings</title>
 
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/themes.css">
+
+<script defer src="../js/save.js"></script>
+<script defer src="../js/main.js"></script>
+<script defer src="../js/ui.js"></script>
+</head>
+
+<body class="theme-neon">
+
+<section class="screen active">
+<h1 class="logo smallLogo">SETTINGS</h1>
+<p class="tag">Tune the machine ⚙️</p>
+
+<div class="card">
+
+<div class="rowLine">
+<span>Sound</span>
+<button class="btn smallBtn" onclick="toggleSound()">TOGGLE</button>
+</div>
+
+<div class="rowLine">
+<span>Vibration</span>
+<button class="btn smallBtn" onclick="toggleVibration()">TOGGLE</button>
+</div>
+
+<div class="rowLine">
+<span>Theme</span>
+<button class="btn smallBtn" onclick="cycleTheme()">CHANGE</button>
+</div>
+
+</div>
+
+<button class="btn ghost" onclick="goPage('index.html')">BACK</button>
+</section>
+
+</body>
+</html>
