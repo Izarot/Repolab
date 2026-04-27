@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "name": "Inferno",
+      "cost": 100,
+      "type": "skin"
+    },
+    {
+      "name": "Ultra",
+      "cost": 180,
+      "type": "skin"
+    },
+    {
+      "name": "Void",
+      "cost": 250,
+      "type": "skin"
+    },
+    {
+      "name": "Extra Life",
+      "cost": 80,
+      "type": "boost"
+    }
+  ]
+}
