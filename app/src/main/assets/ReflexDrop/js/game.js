@@ -8,16 +8,17 @@ let spawnLoop = null;
 const arena = document.getElementById("arena");
 
 function startGame(){
+
 score = 0;
 combo = 0;
 bestCombo = 0;
 lives = 5;
 running = true;
 
+arena.innerHTML = "";
+
 document.getElementById("menu").style.display = "none";
 document.getElementById("gameOver").classList.add("hidden");
-
-arena.innerHTML = "";
 
 updateHUD();
 
@@ -32,17 +33,23 @@ updateCoins();
 }
 
 function rand(min,max){
-return Math.random()*(max-min)+min;
+return Math.random() * (max-min) + min;
+}
+
+function pickType(){
+
+let r = Math.random();
+
+if(r < .33) return "circle";
+if(r < .66) return "triangle";
+return "square";
 }
 
 function spawnShape(){
+
 if(!running) return;
 
-let typeRoll = Math.random();
-let type = "square";
-
-if(typeRoll < .33) type = "circle";
-else if(typeRoll < .66) type = "triangle";
+let type = pickType();
 
 let el = document.createElement("div");
 el.className = "shape " + type;
@@ -59,7 +66,7 @@ el.style.color = "#ff4d6d";
 
 let x = rand(10, arena.clientWidth - 70);
 let y = -70;
-let speed = rand(2.5,5);
+let speed = rand(2.4,4.8);
 
 el.style.left = x + "px";
 el.style.top = y + "px";
@@ -67,16 +74,21 @@ el.style.top = y + "px";
 arena.appendChild(el);
 
 el.onclick = ()=>{
+
 if(!running) return;
 
-score += points(type);
+let pts = scoreFor(type);
+
+score += pts;
 combo++;
 
-if(combo > bestCombo) bestCombo = combo;
+if(combo > bestCombo){
+bestCombo = combo;
+}
 
-showFloat("+" + points(type), x, y);
+showFloat("+" + pts, x, y);
+
 el.remove();
-
 updateHUD();
 };
 
@@ -91,9 +103,12 @@ y += speed;
 el.style.top = y + "px";
 
 if(y > arena.clientHeight){
+
 clearInterval(fall);
 
-if(document.body.contains(el)) el.remove();
+if(document.body.contains(el)){
+el.remove();
+}
 
 combo = 0;
 lives--;
@@ -108,21 +123,24 @@ endGame();
 },16);
 }
 
-function points(type){
+function scoreFor(type){
+
 if(type === "circle") return 20;
 if(type === "triangle") return 3;
 return 4;
 }
 
 function endGame(){
+
 running = false;
 clearInterval(spawnLoop);
 
-coins += bestCombo;
-saveCoins();
+rewardRun();
+checkStoryProgress();
 
 document.getElementById("summary").innerText =
-"Best Combo x" + bestCombo + " = +" + bestCombo + " coins";
+"Best Combo x" + bestCombo +
+" = +" + bestCombo + " coins";
 
 document.getElementById("gameOver").classList.remove("hidden");
 
@@ -130,7 +148,9 @@ updateCoins();
 }
 
 function showFloat(txt,x,y){
+
 let f = document.createElement("div");
+
 f.className = "floatText";
 f.innerText = txt;
 f.style.left = x + "px";
@@ -139,5 +159,7 @@ f.style.color = "#00ff95";
 
 arena.appendChild(f);
 
-setTimeout(()=>f.remove(),700);
+setTimeout(()=>{
+f.remove();
+},700);
 }
