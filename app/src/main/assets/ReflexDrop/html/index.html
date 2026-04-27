@@ -11,45 +11,113 @@
 <link rel="stylesheet" href="../css/mobile.css">
 
 <script defer src="../js/save.js"></script>
+<script defer src="../js/main.js"></script>
 <script defer src="../js/auth.js"></script>
 <script defer src="../js/ui.js"></script>
+<script defer src="../js/effects.js"></script>
 <script defer src="../js/game.js"></script>
-<script defer src="../js/main.js"></script>
 </head>
 
 <body class="theme-neon">
 
+<!-- LOGIN SCREEN -->
 <section id="loginScreen" class="screen active">
+
 <h1 class="logo">REFLEX DROP</h1>
 <p class="tag">Titan Edition ⚡</p>
 
 <div class="card">
-<input id="username" class="input" placeholder="Username">
-<input id="password" class="input" type="password" placeholder="Password">
-<button class="btn" onclick="loginUser()">LOGIN / REGISTER</button>
+
+<input
+id="username"
+class="input"
+placeholder="Username"
+autocomplete="off">
+
+<input
+id="password"
+class="input"
+type="password"
+placeholder="Password"
+autocomplete="off">
+
+<button class="btn" onclick="loginUser()">
+LOGIN / REGISTER
+</button>
+
+<p class="muted">
+Offline local account system
+</p>
+
 </div>
 </section>
 
+<!-- HOME SCREEN -->
 <section id="homeScreen" class="screen">
+
 <h1 class="logo smallLogo">REFLEX DROP</h1>
 <p class="tag" id="welcomeText">Welcome</p>
 
 <div class="statsRow">
-<div class="miniCard"><span>Score</span><b id="bestScore">0</b></div>
-<div class="miniCard"><span>Combo</span><b id="bestCombo">0</b></div>
-<div class="miniCard"><span>Coins</span><b id="coinCount">0</b></div>
+
+<div class="miniCard">
+<span>BEST</span>
+<b id="bestScore">0</b>
 </div>
 
-<button class="btn" onclick="startGame()">PLAY</button>
-<button class="btn ghost" onclick="goPage('story.html')">STORY MODE</button>
-<button class="btn ghost" onclick="goPage('inventory.html')">INVENTORY</button>
-<button class="btn ghost" onclick="goPage('quests.html')">QUESTS</button>
-<button class="btn ghost" onclick="goPage('stats.html')">STATS</button>
-<button class="btn ghost" onclick="goPage('store.html')">STORE</button>
-<button class="btn danger" onclick="logoutUser()">LOGOUT</button>
+<div class="miniCard">
+<span>COMBO</span>
+<b id="bestCombo">0</b>
+</div>
+
+<div class="miniCard">
+<span>COINS</span>
+<b id="coinCount">0</b>
+</div>
+
+</div>
+
+<button class="btn" onclick="startGame()">
+PLAY
+</button>
+
+<button class="btn ghost" onclick="goPage('story.html')">
+STORY MODE
+</button>
+
+<button class="btn ghost" onclick="goPage('inventory.html')">
+INVENTORY
+</button>
+
+<button class="btn ghost" onclick="goPage('quests.html')">
+QUESTS
+</button>
+
+<button class="btn ghost" onclick="goPage('stats.html')">
+STATS
+</button>
+
+<button class="btn ghost" onclick="goPage('store.html')">
+STORE
+</button>
+
+<button class="btn ghost" onclick="goPage('settings.html')">
+SETTINGS
+</button>
+
+<button class="btn ghost" onclick="goPage('credits.html')">
+CREDITS
+</button>
+
+<button class="btn danger" onclick="logoutUser()">
+LOGOUT
+</button>
+
 </section>
 
+<!-- GAME SCREEN -->
 <section id="gameScreen" class="screen">
+
 <div class="hud">
 <div>Score: <span id="liveScore">0</span></div>
 <div>Combo: <span id="liveCombo">0</span></div>
@@ -58,7 +126,18 @@
 
 <div id="arena"></div>
 
-<button class="btn danger smallBtn" onclick="endRun()">QUIT</button>
+<div class="card">
+
+<button class="btn danger" onclick="endRun()">
+END RUN
+</button>
+
+<button class="btn ghost" onclick="showHome()">
+HOME
+</button>
+
+</div>
+
 </section>
 
 </body>
