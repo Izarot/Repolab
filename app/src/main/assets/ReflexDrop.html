@@ -3,433 +3,600 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Reflex Drop</title>
+<title>Reflex Drop V4</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
+*{margin:0;padding:0;box-sizing:border-box}
 body{
 font-family:Arial,Helvetica,sans-serif;
-overflow:hidden;
-background:
-radial-gradient(circle at top left,#16333f,#0d1117 45%),
-radial-gradient(circle at bottom right,#20132d,#0d1117 55%);
+background:linear-gradient(180deg,#071018,#0d1622,#12101f);
 color:#fff;
+overflow:hidden;
 user-select:none;
+}
+.hidden{display:none!important}
+
+#app{
+position:fixed;inset:0;
+overflow:hidden;
+}
+
+.screen{
+position:absolute;inset:0;
+padding:18px;
+overflow:auto;
+}
+
+.panel{
+background:rgba(255,255,255,.07);
+border:1px solid rgba(255,255,255,.08);
+border-radius:22px;
+padding:18px;
+backdrop-filter:blur(10px);
+margin-bottom:14px;
+}
+
+h1{
+font-size:42px;
+text-align:center;
+margin:14px 0;
+color:#00eaff;
+text-shadow:0 0 18px #00eaff77;
+}
+
+h2{font-size:26px;margin-bottom:12px}
+
+.sub{
+text-align:center;
+color:#b6c5d1;
+margin-bottom:14px;
+}
+
+input{
+width:100%;
+padding:14px;
+font-size:18px;
+border:none;
+border-radius:16px;
+margin:8px 0;
+background:#ffffff12;
+color:#fff;
+}
+
+button{
+width:100%;
+padding:16px;
+margin:8px 0;
+font-size:20px;
+font-weight:900;
+border:none;
+border-radius:18px;
+background:linear-gradient(90deg,#00eaff,#00ff95);
+color:#001014;
+box-shadow:0 0 18px #00eaff55;
+}
+
+button:active{transform:scale(.98)}
+
+.smallBtn{
+font-size:16px;
+padding:12px;
+}
+
+.row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.card{
+padding:14px;
+border-radius:18px;
+background:#ffffff10;
+text-align:center;
 }
 
 #topbar{
 position:fixed;
-top:0;
-left:0;
-right:0;
-height:70px;
+top:0;left:0;right:0;
+height:68px;
 display:flex;
 justify-content:space-evenly;
 align-items:center;
-background:rgba(0,0,0,.35);
+background:#00000044;
 backdrop-filter:blur(10px);
-z-index:1000;
-}
-
-.stat{
-padding:10px 14px;
-border-radius:18px;
-background:rgba(255,255,255,.08);
-font-size:20px;
-min-width:92px;
-text-align:center;
+z-index:20;
 }
 
 #game{
 position:absolute;
-top:70px;
-left:0;
-right:0;
-bottom:0;
+top:68px;left:0;right:0;bottom:0;
 overflow:hidden;
-}
-
-#menu,#gameover,#reflexBanner{
-position:fixed;
-inset:0;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:2000;
-text-align:center;
-padding:20px;
-}
-
-#menu,#gameover{
-background:rgba(8,12,18,.76);
-backdrop-filter:blur(12px);
-}
-
-.hidden{
-display:none !important;
-}
-
-h1{
-font-size:56px;
-line-height:.95;
-letter-spacing:2px;
-color:#00e7ff;
-text-shadow:0 0 20px #00e7ff88;
-margin-bottom:18px;
-}
-
-.sub{
-font-size:22px;
-color:#d0d7df;
-margin:7px 0;
-}
-
-.small{
-font-size:18px;
-color:#93a1b1;
-margin-top:10px;
-}
-
-button{
-margin-top:24px;
-border:none;
-padding:18px 42px;
-font-size:28px;
-font-weight:900;
-border-radius:24px;
-background:linear-gradient(90deg,#12d8ff,#00ff88);
-color:#000;
-box-shadow:0 0 25px #00ffd577;
-}
-
-button:active{
-transform:scale(.96);
-}
-
-.floatShape{
-position:absolute;
-opacity:.12;
-animation:drift 8s linear infinite;
-}
-
-@keyframes drift{
-0%{transform:translateY(0) rotate(0deg);}
-100%{transform:translateY(-60px) rotate(180deg);}
 }
 
 .shape{
 position:absolute;
-filter:drop-shadow(0 0 14px rgba(255,255,255,.35));
+filter:drop-shadow(0 0 12px rgba(255,255,255,.35));
 }
 
 .circle{
-width:58px;
-height:58px;
-border-radius:50%;
-background:#ff4a4a;
+width:58px;height:58px;border-radius:50%;background:#ff5757;
 }
 
 .square{
-width:58px;
-height:58px;
-background:#00ff88;
+width:58px;height:58px;background:#00ff88;
 }
 
 .rect{
-width:78px;
-height:50px;
-border-radius:12px;
-background:#ffd83d;
+width:80px;height:48px;border-radius:12px;background:#ffd93d;
 }
 
 .triangle{
-width:0;
-height:0;
+width:0;height:0;
 border-left:30px solid transparent;
 border-right:30px solid transparent;
-border-bottom:56px solid #a45cff;
+border-bottom:58px solid #9c5cff;
 }
 
 .gold{
-width:60px;
-height:60px;
-border-radius:50%;
+width:60px;height:60px;border-radius:50%;
 background:#ffd700;
-box-shadow:0 0 22px #ffd700;
+box-shadow:0 0 20px #ffd700;
 }
 
 .bomb{
-width:58px;
-height:58px;
-border-radius:50%;
-background:#111;
-border:5px solid #ff2a2a;
+width:58px;height:58px;border-radius:50%;
+background:#111;border:5px solid #ff2a2a;
 }
 
-.comboText{
+.floaty{
 position:absolute;
-font-size:24px;
+opacity:.08;
+animation:drift 8s linear infinite alternate;
+}
+
+@keyframes drift{
+from{transform:translateY(0) rotate(0)}
+to{transform:translateY(-60px) rotate(180deg)}
+}
+
+.pop{
+position:absolute;
+font-size:22px;
 font-weight:900;
-color:#00f0ff;
-pointer-events:none;
 animation:rise .7s forwards;
+pointer-events:none;
 }
 
 @keyframes rise{
-0%{opacity:1;transform:translateY(0) scale(1);}
-100%{opacity:0;transform:translateY(-50px) scale(1.4);}
+0%{opacity:1;transform:translateY(0) scale(1)}
+100%{opacity:0;transform:translateY(-45px) scale(1.4)}
 }
 
-#reflexBanner{
+#hand{
+position:absolute;
+font-size:44px;
 pointer-events:none;
-background:rgba(0,255,255,.12);
-font-size:58px;
+z-index:40;
+opacity:0;
+transition:.18s;
+}
+
+#reflexMode{
+position:fixed;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:52px;
 font-weight:900;
 color:#00ffff;
 text-shadow:0 0 24px #00ffff;
-animation:pulse .8s infinite;
+background:#00ffff11;
+z-index:50;
+pointer-events:none;
 }
 
-@keyframes pulse{
-50%{transform:scale(1.04);}
-}
-
-.shake{
-animation:shake .18s;
-}
-
-@keyframes shake{
-0%{transform:translateX(0);}
-25%{transform:translateX(-6px);}
-50%{transform:translateX(6px);}
-75%{transform:translateX(-4px);}
-100%{transform:translateX(0);}
+.shopItem{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px;
+border-radius:16px;
+background:#ffffff0e;
+margin:8px 0;
 }
 </style>
 </head>
 
 <body>
+<div id="app">
 
+<div id="login" class="screen">
+<h1>REFLEX DROP</h1>
+<div class="sub">Login or create account</div>
+
+<div class="panel">
+<input id="user" placeholder="Username">
+<input id="pass" placeholder="Password" type="password">
+<button onclick="login()">LOGIN</button>
+<button onclick="register()">REGISTER</button>
+</div>
+</div>
+
+<div id="menu" class="screen hidden">
+<h1>REFLEX DROP</h1>
+<div class="sub" id="welcome"></div>
+
+<div class="panel row">
+<div class="card">Coins<br><span id="coinsTxt">0</span></div>
+<div class="card">Best<br><span id="bestTxt">0</span></div>
+</div>
+
+<div class="panel">
+<button onclick="openGame()">PLAY</button>
+<button onclick="showShop()">SHOP</button>
+<button onclick="showMissions()">MISSIONS</button>
+<button onclick="showStats()">STATS</button>
+<button onclick="logout()" class="smallBtn">LOGOUT</button>
+</div>
+</div>
+
+<div id="shop" class="screen hidden">
+<h1>SHOP</h1>
+<div class="panel" id="shopList"></div>
+<button onclick="goMenu()">BACK</button>
+</div>
+
+<div id="missions" class="screen hidden">
+<h1>MISSIONS</h1>
+<div class="panel">
+<div>Score 200 = +50 coins</div>
+<div>Play 5 games = +40 coins</div>
+<div>Reach combo 10 = +80 coins</div>
+</div>
+<button onclick="goMenu()">BACK</button>
+</div>
+
+<div id="stats" class="screen hidden">
+<h1>STATS</h1>
+<div class="panel" id="statsBox"></div>
+<button onclick="goMenu()">BACK</button>
+</div>
+
+<div id="play" class="screen hidden" style="padding:0">
 <div id="topbar">
-<div class="stat">Score: <span id="score">0</span></div>
-<div class="stat">Lives: <span id="lives">5</span></div>
-<div class="stat">Best: <span id="best">0</span></div>
+<div class="card">Score <span id="score">0</span></div>
+<div class="card">Lives <span id="lives">5</span></div>
+<div class="card">Combo <span id="combo">0</span></div>
 </div>
-
 <div id="game"></div>
-
-<div id="menu">
-<h1>REFLEX<br>DROP</h1>
-<div class="sub">Tap falling shapes fast.</div>
-<div class="sub">Equal sides = more points.</div>
-<div class="small">x5 / x10 combos may trigger REFLEX MODE ⚡</div>
-<button onclick="startGame()">PLAY</button>
 </div>
 
-<div id="gameover" class="hidden"></div>
+<div id="reflexMode" class="hidden">REFLEX MODE ⚡</div>
+<div id="hand">👉</div>
 
-<div id="reflexBanner" class="hidden">REFLEX MODE ⚡</div>
+</div>
 
 <script>
-let score=0;
-let lives=5;
-let best=localStorage.getItem("reflexBest")||0;
-let combo=0;
+let currentUser=null;
+let score=0,lives=5,combo=0;
 let playing=false;
 let spawnLoop;
-let levelLoop;
-let spawnRate=900;
 let speedBoost=0;
 let reflex=false;
+let gameCount=0;
 
-const game=document.getElementById("game");
-const menu=document.getElementById("menu");
-const gameover=document.getElementById("gameover");
-const reflexBanner=document.getElementById("reflexBanner");
+const ids=x=>document.getElementById(x);
 
-const scoreEl=document.getElementById("score");
-const livesEl=document.getElementById("lives");
-const bestEl=document.getElementById("best");
+function loadUsers(){
+return JSON.parse(localStorage.getItem("rdUsers")||"{}");
+}
+function saveUsers(data){
+localStorage.setItem("rdUsers",JSON.stringify(data));
+}
 
-bestEl.textContent=best;
+function defaultData(name,pw){
+return {
+password:pw,
+coins:0,
+best:0,
+games:0,
+taps:0,
+owned:["Default"],
+theme:"Default"
+};
+}
 
-function updateUI(){
-scoreEl.textContent=score;
-livesEl.textContent=lives;
-bestEl.textContent=best;
+function register(){
+let u=ids("user").value.trim();
+let p=ids("pass").value.trim();
+if(!u||!p)return alert("Fill both");
+
+let users=loadUsers();
+if(users[u]) return alert("Username exists");
+
+users[u]=defaultData(u,p);
+saveUsers(users);
+alert("Registered. Login now.");
+}
+
+function login(){
+let u=ids("user").value.trim();
+let p=ids("pass").value.trim();
+let users=loadUsers();
+
+if(!users[u]||users[u].password!==p) return alert("Wrong login");
+
+currentUser=u;
+showMenu();
+}
+
+function userData(){
+return loadUsers()[currentUser];
+}
+
+function updateUser(obj){
+let users=loadUsers();
+users[currentUser]=obj;
+saveUsers(users);
+}
+
+function hideAll(){
+["login","menu","shop","missions","stats","play"].forEach(x=>ids(x).classList.add("hidden"));
+}
+
+function showMenu(){
+hideAll();
+ids("menu").classList.remove("hidden");
+
+let d=userData();
+ids("welcome").innerText="Welcome, "+currentUser;
+ids("coinsTxt").innerText=d.coins;
+ids("bestTxt").innerText=d.best;
+}
+
+function goMenu(){showMenu();}
+
+function logout(){
+currentUser=null;
+hideAll();
+ids("login").classList.remove("hidden");
+}
+
+function showShop(){
+hideAll();
+ids("shop").classList.remove("hidden");
+
+let d=userData();
+
+ids("shopList").innerHTML=`
+<div class="shopItem">Blue Theme <span>100</span></div>
+<button onclick="buyTheme('Blue',100)">BUY</button>
+
+<div class="shopItem">Purple Theme <span>150</span></div>
+<button onclick="buyTheme('Purple',150)">BUY</button>
+
+<div class="shopItem">Golden Hand <span>120</span></div>
+<button onclick="buyHand()">BUY</button>
+`;
+}
+
+function buyTheme(name,cost){
+let d=userData();
+if(d.coins<cost) return alert("Not enough coins");
+d.coins-=cost;
+d.theme=name;
+updateUser(d);
+alert(name+" theme bought");
+showShop();
+}
+
+function buyHand(){
+let d=userData();
+if(d.coins<120) return alert("Not enough coins");
+d.coins-=120;
+updateUser(d);
+alert("Golden hand unlocked");
+showShop();
+}
+
+function showMissions(){
+hideAll();
+ids("missions").classList.remove("hidden");
+}
+
+function showStats(){
+hideAll();
+ids("stats").classList.remove("hidden");
+
+let d=userData();
+ids("statsBox").innerHTML=`
+Games Played: ${d.games}<br><br>
+Best Score: ${d.best}<br><br>
+Total Taps: ${d.taps}<br><br>
+Coins: ${d.coins}
+`;
+}
+
+function openGame(){
+hideAll();
+ids("play").classList.remove("hidden");
+startGame();
 }
 
 function startGame(){
-score=0;
-lives=5;
-combo=0;
-spawnRate=900;
+score=0;lives=5;combo=0;
 speedBoost=0;
 playing=true;
-game.innerHTML="";
-menu.classList.add("hidden");
-gameover.classList.add("hidden");
-updateUI();
 
-runSpawner();
+ids("score").innerText=0;
+ids("lives").innerText=5;
+ids("combo").innerText=0;
+ids("game").innerHTML="";
 
-levelLoop=setInterval(()=>{
-if(spawnRate>350) spawnRate-=60;
-speedBoost+=0.2;
-runSpawner();
+spawnLoop=setInterval(spawnShape,850);
+
+setInterval(()=>{
+speedBoost+=0.25;
 },12000);
 }
 
-function runSpawner(){
-clearInterval(spawnLoop);
-spawnLoop=setInterval(spawnShape,spawnRate);
+function rand(a){
+return a[Math.floor(Math.random()*a.length)];
 }
 
-function rand(arr){
-return arr[Math.floor(Math.random()*arr.length)];
+function shapeType(){
+let r=Math.random();
+if(r<0.06)return "gold";
+if(r<0.11)return "bomb";
+return rand(["circle","square","rect","triangle"]);
 }
 
-function getType(){
-let roll=Math.random();
-
-if(roll<0.06) return "gold";
-if(roll<0.11) return "bomb";
-
-return rand(["circle","square","triangle","rect"]);
-}
-
-function getPoints(type){
-if(type==="gold") return 50;
-if(type==="circle") return 20;
-if(type==="square") return 4;
-if(type==="triangle") return Math.random()<0.5?2:3;
-if(type==="rect") return 2;
+function points(t){
+if(t=="gold")return 50;
+if(t=="circle")return 20;
+if(t=="square")return 4;
+if(t=="triangle")return 3;
+if(t=="rect")return 2;
 return 0;
 }
 
-function maybeReflex(){
-if(reflex) return;
-
-if(combo===5 && Math.random()<0.35) activateReflex();
-if(combo===10 && Math.random()<0.65) activateReflex();
-}
-
-function activateReflex(){
-reflex=true;
-reflexBanner.classList.remove("hidden");
-
-setTimeout(()=>{
-reflex=false;
-reflexBanner.classList.add("hidden");
-},5000);
-}
-
 function spawnShape(){
-if(!playing) return;
+if(!playing)return;
 
-const type=getType();
-const el=document.createElement("div");
-el.className="shape "+type;
+const t=shapeType();
+const s=document.createElement("div");
+s.className="shape "+t;
 
-let x=Math.random()*(window.innerWidth-90);
+let x=Math.random()*(innerWidth-90);
 let y=-80;
-let speed=(2+Math.random()*2.5)+speedBoost;
+let speed=2+Math.random()*2+speedBoost;
 
-if(reflex) speed*=0.55;
+if(reflex)speed*=0.55;
 
-el.style.left=x+"px";
-el.style.top=y+"px";
+s.style.left=x+"px";
+s.style.top=y+"px";
 
-game.appendChild(el);
+ids("game").appendChild(s);
 
-el.onclick=()=>{
-if(!playing) return;
+s.onclick=()=>{
+handHit(x,y);
 
-if(type==="bomb"){
+let d=userData();
+d.taps++;
+
+if(t=="bomb"){
 lives--;
 combo=0;
-popText("BOOM!",x,y,"#ff3333");
-document.body.classList.add("shake");
-setTimeout(()=>document.body.classList.remove("shake"),180);
+pop("BOOM",x,y,"#ff4444");
 }else{
 combo++;
-let pts=getPoints(type);
-if(reflex) pts*=2;
-score+=pts;
-popText("+"+pts,x,y,"#00ffff");
-maybeReflex();
+let gain=points(t);
+
+if(reflex)gain*=2;
+score+=gain;
+d.coins+=Math.ceil(gain/5);
+
+if(combo==5 && Math.random()<0.4) activateReflex();
+if(combo==10 && Math.random()<0.7) activateReflex();
+
+pop("+"+gain,x,y,"#00ffff");
 }
 
-updateUI();
-el.remove();
+updateUser(d);
+updateHUD();
 
-if(lives<=0) endGame();
+s.remove();
+
+if(lives<=0) gameOver();
 };
 
 const fall=setInterval(()=>{
-if(!document.body.contains(el)){
+if(!document.body.contains(s)){
 clearInterval(fall);
 return;
 }
 
 y+=speed;
-el.style.top=y+"px";
+s.style.top=y+"px";
 
-if(y>window.innerHeight){
+if(y>innerHeight){
 clearInterval(fall);
-el.remove();
+s.remove();
 
-if(type!=="bomb"){
+if(t!="bomb"){
 lives--;
 combo=0;
-updateUI();
-if(lives<=0) endGame();
+updateHUD();
+if(lives<=0)gameOver();
 }
 }
 },16);
 }
 
-function popText(text,x,y,color){
-const t=document.createElement("div");
-t.className="comboText";
-t.textContent=text;
-t.style.left=x+"px";
-t.style.top=y+"px";
-t.style.color=color;
-game.appendChild(t);
-
-setTimeout(()=>t.remove(),700);
+function updateHUD(){
+ids("score").innerText=score;
+ids("lives").innerText=lives;
+ids("combo").innerText=combo;
 }
 
-function endGame(){
+function pop(txt,x,y,color){
+let p=document.createElement("div");
+p.className="pop";
+p.innerText=txt;
+p.style.left=x+"px";
+p.style.top=y+"px";
+p.style.color=color;
+ids("game").appendChild(p);
+setTimeout(()=>p.remove(),700);
+}
+
+function handHit(x,y){
+let h=ids("hand");
+h.style.left=(x-30)+"px";
+h.style.top=(y+60)+"px";
+h.style.opacity=1;
+h.style.transform="translate(0,0) scale(1)";
+
+setTimeout(()=>{
+h.style.transform="translate(18px,-38px) scale(1.18)";
+},20);
+
+setTimeout(()=>{
+h.style.opacity=0;
+},180);
+}
+
+function activateReflex(){
+if(reflex)return;
+reflex=true;
+ids("reflexMode").classList.remove("hidden");
+
+setTimeout(()=>{
+reflex=false;
+ids("reflexMode").classList.add("hidden");
+},5000);
+}
+
+function gameOver(){
 playing=false;
 clearInterval(spawnLoop);
-clearInterval(levelLoop);
 
-if(score>best){
-best=score;
-localStorage.setItem("reflexBest",best);
-}
+let d=userData();
+d.games++;
 
-updateUI();
+if(score>d.best)d.best=score;
 
-gameover.innerHTML=`
-<h1>GAME OVER</h1>
-<div class="sub">Score: ${score}</div>
-<div class="small">Best: ${best}</div>
-<button onclick="startGame()">PLAY AGAIN</button>
-`;
+if(score>=200)d.coins+=50;
+if(d.games>=5)d.coins+=40;
+if(combo>=10)d.coins+=80;
 
-gameover.classList.remove("hidden");
-menu.classList.add("hidden");
+updateUser(d);
+
+alert("Game Over! Score: "+score);
+showMenu();
 }
 </script>
-
 </body>
 </html>
